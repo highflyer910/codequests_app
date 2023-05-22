@@ -10,17 +10,19 @@
           <button class="sign-in" v-if="!user" @click="signIn">
             <i class="fab fa-github" aria-hidden="true"></i> Sign In
           </button>
-          <h2 v-if="user">Signed In User: {{ user }}</h2>
-          <button class="sign-out" v-if="user" @click="signOut">Sign Out</button>
+          <button class="sign-out" v-if="user" @click="signOut">
+            <i class="fab fa-github" aria-hidden="true"></i> Sign Out
+          </button>
         </div>
       </div>
+      <h2 class="signed-in" v-if="user">You can do it {{ user }}:)</h2>
       <img :src="darkMode ? 'src/assets/woman_dark.svg' : 'src/assets/woman.svg'" :class="{ 'image-light': !darkMode, 'image-dark': darkMode }" alt="Woman image">
       <h2 class="title">-CodeQuest- <br> Tame Your Side Projects</h2>
       <h3 class="subtitle">Embrace the Challenge, One Project at a Time!</h3>
-      <input type="text" v-model="inputValue" v-if="user" placeholder="To Do Project" @keypress.enter="addItemToList" :disabled="!user">
-      <button v-if="user" class="add-item" @click="addItemToList" :disabled="!user">Add to list</button>
+      <input type="text" v-model="inputValue" placeholder="To Do Project" @keypress.enter="addItemToList" :disabled="!user" v-show="user">
+      <button class="add-item" @click="addItemToList" :disabled="!user" v-show="user">Add to list</button>
       <ul>
-        <li v-for="item in items" :key="item.id" @click="removeItem(item.id)">{{ item.value }}</li>
+        <li v-for="(item, index) in items" :key="'item-' + index" @click="removeItem(item.id)">{{ item.value }}</li>
       </ul>
     </div>
   </div>
@@ -28,24 +30,42 @@
 
 <script>
 import { ref, onMounted, watch } from 'vue';
-import { getAuth, signInWithPopup, onAuthStateChanged, GithubAuthProvider, signOut } from 'firebase/auth';
+import { getAuth, signInWithPopup, onAuthStateChanged, setPersistence, browserSessionPersistence, GithubAuthProvider } from 'firebase/auth';
 import { getDatabase, ref as dbRef, push, onValue, remove } from 'firebase/database';
 import firebaseApp from '/db';
 
 export default {
-  name: 'App',
+  name: 'Projects',
   setup() {
     const darkMode = ref(false);
     const inputValue = ref('');
     const items = ref([]);
-    const user = ref(null);
 
     const app = firebaseApp;
     const database = getDatabase(app);
-    const shoppingListInDB = dbRef(database, 'projects');
+    const projectsInDB = dbRef(database, 'projects');
 
     const auth = getAuth(app);
+    setPersistence(auth, browserSessionPersistence);
     const provider = new GithubAuthProvider();
+
+    const user = ref(null);
+
+    const saveUserToLocalStorage = (displayName) => {
+      localStorage.setItem('user', displayName);
+    };
+
+    const removeUserFromLocalStorage = () => {
+      localStorage.removeItem('user');
+    };
+
+    const saveThemeToLocalStorage = (theme) => {
+      localStorage.setItem('theme', theme);
+    };
+
+    const getThemeFromLocalStorage = () => {
+      return localStorage.getItem('theme');
+    };
 
     const addItemToList = () => {
       const trimmedValue = inputValue.value.trim();
@@ -55,7 +75,7 @@ export default {
         const date = today.toLocaleDateString();
         const itemValue = `${date} - ${trimmedValue}`;
 
-        push(shoppingListInDB, itemValue);
+        push(projectsInDB, itemValue);
 
         inputValue.value = '';
       }
@@ -69,8 +89,9 @@ export default {
     const signIn = async () => {
       try {
         const result = await signInWithPopup(auth, provider);
-        user.value = result.user.displayName;
-        saveUserToLocalStorage(result.user);
+        const displayName = result.user.displayName;
+        user.value = displayName;
+        saveUserToLocalStorage(displayName); // Store the user in local storage
       } catch (error) {
         console.log('Error signing in:', error.message);
       }
@@ -78,55 +99,56 @@ export default {
 
     const signOut = async () => {
       try {
-        await signOut(auth);
+        await auth.signOut();
         user.value = null;
-        removeUserFromLocalStorage();
+        removeUserFromLocalStorage(); // Remove the user from local storage
+        items.value = []; // Clear the to-do items
       } catch (error) {
         console.log('Error signing out:', error.message);
       }
     };
 
-    const saveUserToLocalStorage = (user) => {
-      localStorage.setItem('user', JSON.stringify(user));
-    };
+    onAuthStateChanged(auth, (loggedInUser) => {
+      if (loggedInUser) {
+        // User is signed in
+        const displayName = loggedInUser.displayName;
+        user.value = displayName;
 
-    const getUserFromLocalStorage = () => {
-      const user = localStorage.getItem('user');
-      return user ? JSON.parse(user) : null;
-    };
+        // Fetch initial to-do items once when the user is signed in
+        onValue(projectsInDB, (snapshot) => {
+          const data = snapshot.val();
 
-    const removeUserFromLocalStorage = () => {
-      localStorage.removeItem('user');
-    };
+          if (data) {
+            items.value = Object.entries(data).map(([id, value]) => ({ id, value }));
+          } else {
+            items.value = [];
+          }
+        });
+      } else {
+        // User is signed out
+        user.value = null;
+        items.value = []; // Clear the to-do items
+      }
+    });
 
     onMounted(() => {
-      onValue(shoppingListInDB, (snapshot) => {
-        const data = snapshot.val();
-
-        if (data) {
-          items.value = Object.entries(data).map(([id, value]) => ({ id, value }));
-        } else {
-          items.value = [];
-        }
-      });
-
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          // User is signed in
-          user.value = user;
-          saveUserToLocalStorage(user);
-        } else {
-          // User is signed out
-          user.value = getUserFromLocalStorage();
-        }
-      });
+      const theme = getThemeFromLocalStorage();
+      if (theme === 'dark') {
+        darkMode.value = true;
+        document.documentElement.classList.add('dark-mode');
+      } else {
+        darkMode.value = false;
+        document.documentElement.classList.remove('dark-mode');
+      }
     });
 
     watch(darkMode, (newVal) => {
       if (newVal) {
         document.documentElement.classList.add('dark-mode');
+        saveThemeToLocalStorage('dark');
       } else {
         document.documentElement.classList.remove('dark-mode');
+        saveThemeToLocalStorage('light');
       }
     });
 

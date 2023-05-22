@@ -27,6 +27,12 @@
       margin: 15px 40px;
       font-family: 'Roboto Slab', serif;
   }
+
+  .signed-in{
+    font-size: 0.9rem;
+    margin: 20px auto 0;
+    text-align: center;
+  }
   
   h3 {
       font-size: 0.9rem;
@@ -38,7 +44,7 @@
       flex-direction: column;
       margin: 0 auto;
       text-align: center;
-      padding-inline: 20px;
+      padding: 20px;
       height: 100vh;
   }
   
@@ -71,9 +77,10 @@
       text-transform: uppercase;
   }
   
-  .add-item:hover {
+  .add-item:is(:hover, :focus-visible, .active) {
       background-color: var(--primary-dark);
       cursor: pointer;
+      outline: none;
   }
   
   ul {
@@ -83,9 +90,12 @@
       flex-wrap: wrap;
       gap: 10px;
   }
+
   
   ul li {
       font-size: 16px;
+      max-width: 300px;
+      overflow-wrap: break-word;
       background-color: var(--secondary);
       padding: 15px;
       border-radius: 8px;
@@ -104,7 +114,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 10px;
   }
   
   .toggle {
@@ -151,14 +161,16 @@
     background-color: var(--primary);
   }
 
-  .github button{
+  .github .sign-in,
+  .github .sign-out{
     position: relative;
-    width: 80px;
+    width: 90px;
     background-color: var(--primary);
     border: none;
     padding: 6px 6px;
     border-radius: 16px;
     color: var(--secondary);
+    cursor: pointer;
   }
 
   .github .fab{
@@ -196,12 +208,9 @@
     background-color: var(--primary-hover);
   }
 
-  .dark-mode .sign-in{
-    background-color: var(--secondary);
-  }
-
-  .dark-mode .fab{
-    color: var(--primary);
+  .dark-mode .sign-in,
+  .dark-mode .sign-out {
+    background-color: var(--primary-dark);
   }
   
   .dark-mode h2,
