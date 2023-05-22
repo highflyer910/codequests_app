@@ -1,0 +1,226 @@
+:root{
+    --primary: #233a6c;
+    --primary-dark: #192a4f;
+    --primary-hover: #3a5fad;
+    --secondary: #d1e0d0;
+    --secondary-hover: #e2f2e1;
+    --tertiary: #222;
+    --quaternary: #fff;
+  }
+  
+  html,
+  body{
+      font-family: 'Ruda', sans-serif;
+      user-select: none;
+      background-color: var(--secondary);
+      color: var(--primary);
+      max-width: 365px;
+      width: 100%;
+      height: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+  }
+  
+  h2 {
+      font-size: 1.5rem;
+      margin: 15px 40px;
+      font-family: 'Roboto Slab', serif;
+  }
+  
+  h3 {
+      font-size: 0.9rem;
+      opacity: 0.7;
+  }
+  
+  .container {
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      text-align: center;
+      padding-inline: 20px;
+      height: 100vh;
+  }
+  
+  img {
+      width: 150px;
+      margin: 40px auto 0;
+  }
+
+  input,
+  .add-item{
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  
+  input {
+      background-color: var(--secondary-hover);
+      border: 1px solid var(--primary);
+      color: var(--primary-dark);
+      outline: none;
+      margin: 10px 0;
+  }
+  
+  .add-item {
+      color: var(--secondary);
+      background-color: var(--primary);
+      border: 0;
+      font-family: 'Roboto Slab', serif;
+      text-transform: uppercase;
+  }
+  
+  .add-item:hover {
+      background-color: var(--primary-dark);
+      cursor: pointer;
+  }
+  
+  ul {
+      list-style-type: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+  }
+  
+  ul li {
+      font-size: 16px;
+      background-color: var(--secondary);
+      padding: 15px;
+      border-radius: 8px;
+      flex-grow: 1;
+      color: var(--primary);
+      text-align: center;
+      box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  ul li:hover {
+      background-color: var(--secondary-hover);
+      cursor: pointer;
+  }
+
+  .navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .toggle {
+    position: relative;
+    width: 50px;
+    height: 26px;
+  }
+  
+  .toggle input[type="checkbox"] {
+    display: none;
+  }
+  
+  .toggle label {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 26px;
+    background-color: var(--primary);
+    border-radius: 13px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .toggle label:before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background-color: var(--secondary);
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+  
+  .toggle input[type="checkbox"]:checked + label {
+    background-color: var(--secondary);
+  }
+  
+  .toggle input[type="checkbox"]:checked + label:before {
+    transform: translateX(24px);
+    background-color: var(--primary);
+  }
+
+  .github button{
+    position: relative;
+    width: 80px;
+    background-color: var(--primary);
+    border: none;
+    padding: 6px 6px;
+    border-radius: 16px;
+    color: var(--secondary);
+  }
+
+  .github .fab{
+    color: var(--secondary);
+    font-size: 0.9rem;
+  }
+  
+  .image-dark {
+    display: none;
+  }
+
+  .image-light,
+  .image-dark {
+    transition: opacity 0.3s;
+  }
+  
+  .dark-mode .image-dark {
+    display: block;
+  }
+  
+  .dark-mode .image-light {
+    display: none;
+  }
+  .dark-mode {
+    background-color: var(--primary);
+    color: var(--secondary);
+    transition: background-color 0.5s , color 0.3s;
+  }
+  
+  .dark-mode .add-item {
+    background-color: var(--primary-dark);
+  }
+  
+  .dark-mode .add-item:hover {
+    background-color: var(--primary-hover);
+  }
+
+  .dark-mode .sign-in{
+    background-color: var(--secondary);
+  }
+
+  .dark-mode .fab{
+    color: var(--primary);
+  }
+  
+  .dark-mode h2,
+  .dark-mode h3 {
+    color: var(--secondary);
+  }
+  
+  .dark-mode input {
+    color: var(--primary-dark);
+    caret-color: var(--primary-dark);
+    background-color: var(--secondary-hover);
+  }
+  
+  .dark-mode ul li {
+    background-color: var(--secondary);
+    color: var(--primary);
+  }
+  
+  .dark-mode ul li:hover {
+    background-color: var(--secondary-hover);
+    cursor: pointer;
+  }
