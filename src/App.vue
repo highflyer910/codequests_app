@@ -38,7 +38,7 @@
     </div>
   </div>
   <div v-if="!user" class="footer">
-    <p>© 2023 CodeQuest</p>
+    <p>Made by <a href="https://github.com/highflyer910/codequests_app">Thea</a> © 2023</p>
   </div>
 </template>
 

@@ -127,6 +127,12 @@
     text-align: center;
     margin-bottom: 20px;
   }
+
+  .footer a{
+    text-decoration: none;
+    color: var(--primary-dark);
+    font-weight: bold;
+  }
   
   .toggle {
     position: relative;
@@ -222,6 +228,10 @@
   .dark-mode .sign-in,
   .dark-mode .sign-out {
     background-color: var(--primary-dark);
+  }
+
+  .dark-mode .footer, .dark-mode a{
+    color: var(--secondary);
   }
   
   .dark-mode h2,
