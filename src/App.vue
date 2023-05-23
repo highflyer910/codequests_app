@@ -21,10 +21,25 @@
       <h3 class="subtitle">Embrace the Challenge, One Project at a Time!</h3>
       <input type="text" v-model="inputValue" placeholder="To Do Project" @keypress.enter="addItemToList" :disabled="!user" v-show="user">
       <button class="add-item" @click="addItemToList" :disabled="!user" v-show="user">Add to list</button>
+      <div v-if="!user" class="main-text">
+      <p>
+        We all know how it goes: as developers, 
+        we have an ever-growing list of side projects that often end up forgotten or left unfinished. 😅
+      </p>
+      <p>
+        Our simple app lets you create and manage your project list, 
+        making sure no brilliant idea slips through the cracks. 
+        Stay focused and tackle one project at a time!
+      </p>
+      <p>Embrace the challenge, take control, and let's bring your side projects to life! 💪✨"</p>
+      </div>
       <ul>
         <li v-for="(item, index) in items" :key="'item-' + index" @click="removeItem(item.id)">{{ item.value }}</li>
       </ul>
     </div>
+  </div>
+  <div v-if="!user" class="footer">
+    <p>© 2023 CodeQuest</p>
   </div>
 </template>
 
