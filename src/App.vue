@@ -27,11 +27,10 @@
         we have an ever-growing list of side projects that often end up forgotten or left unfinished. 😅
       </p>
       <p>
-        Our simple app lets you create and manage your project list, 
-        making sure no brilliant idea slips through the cracks. 
-        Stay focused and tackle one project at a time!
+        This simple app lets you create and manage your project list, 
+        making sure no brilliant idea slips through the cracks.
       </p>
-      <p>Embrace the challenge, take control, and let's bring your side projects to life! 💪✨"</p>
+      <p>Stay focused, embrace the challenge, and bring your side projects to life! 💪✨"</p>
       </div>
       <ul>
         <li v-for="(item, index) in items" :key="'item-' + index" @click="removeItem(item.id)">{{ item.value }}</li>
