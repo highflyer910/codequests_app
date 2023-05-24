@@ -17,9 +17,9 @@
       </div>
       <h2 class="signed-in" v-if="user">You can do it {{ user }}:)</h2>
       <img :src="darkMode ? '/images/woman_dark.svg' : '/images/woman.svg'" :class="{ 'image-light': !darkMode, 'image-dark': darkMode }" alt="Woman image">
-      <h2 class="title">-CodeQuest- <br> Tame Your Side Projects</h2>
+      <h2 class="title">- CodeQuest - <br> Tame Your Side Projects</h2>
       <h3 class="subtitle">Embrace the Challenge, One Project at a Time!</h3>
-      <input type="text" v-model="inputValue" placeholder="To Do Project" @keypress.enter="addItemToList" :disabled="!user" v-show="user">
+      <input type="text" v-model="inputValue" placeholder="To Finish Project" @keypress.enter="addItemToList" :disabled="!user" v-show="user">
       <button class="add-item" @click="addItemToList" :disabled="!user" v-show="user">Add to list</button>
       <div v-if="!user" class="main-text">
       <p>

@@ -24,7 +24,7 @@
   
   h2 {
       font-size: 1.5rem;
-      margin: 15px 40px;
+      margin: 15px 0;
       font-family: 'Roboto Slab', serif;
   }
 
@@ -36,7 +36,7 @@
   
   h3 {
       font-size: 0.9rem;
-      opacity: 0.7;
+      opacity: 0.9;
   }
   
   .container {
@@ -45,12 +45,11 @@
       margin: 0 auto;
       text-align: center;
       padding: 20px;
-      height: 100vh;
   }
   
   img {
       width: 150px;
-      margin: 40px auto 0;
+      margin: 40px auto 20px;
   }
 
   .main-text{
@@ -100,7 +99,7 @@
   
   ul li {
       font-size: 16px;
-      max-width: 300px;
+      width: 250px;
       overflow-wrap: break-word;
       background-color: var(--secondary);
       padding: 15px;
@@ -109,6 +108,11 @@
       color: var(--primary);
       text-align: center;
       box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+      transition: all 0.6s;
+  }
+
+  ul li:last-child {
+    margin-bottom: 30px;
   }
   
   ul li:hover {
@@ -126,7 +130,7 @@
   .footer p{
     font-size: 0.8rem;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   }
 
   .footer a{
@@ -185,7 +189,7 @@
     width: 90px;
     background-color: var(--primary);
     border: none;
-    padding: 6px 6px;
+    padding: 7px 6px;
     border-radius: 16px;
     color: var(--secondary);
     cursor: pointer;
@@ -231,7 +235,8 @@
     background-color: var(--primary-dark);
   }
 
-  .dark-mode .footer, .dark-mode a{
+  .dark-mode .footer, 
+  .dark-mode a{
     color: var(--secondary);
   }
   
