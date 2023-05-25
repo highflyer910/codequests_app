@@ -138,6 +138,7 @@
     text-decoration: none;
     color: var(--primary-dark);
     font-weight: bold;
+    cursor: pointer;
   }
   
   .toggle {
