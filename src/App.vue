@@ -44,7 +44,7 @@
 
 <script>
 import { ref, onMounted, watch } from 'vue';
-import { getAuth, signInWithPopup, onAuthStateChanged, setPersistence, browserSessionPersistence, GithubAuthProvider } from 'firebase/auth';
+import { getAuth, signInWithRedirect, onAuthStateChanged, setPersistence, browserSessionPersistence, GithubAuthProvider } from 'firebase/auth';
 import { getDatabase, ref as dbRef, push, onValue, remove } from 'firebase/database';
 import firebaseApp from '/db';
 
@@ -102,10 +102,7 @@ export default {
 
     const signIn = async () => {
       try {
-        const result = await signInWithPopup(auth, provider);
-        const displayName = result.user.displayName;
-        user.value = displayName;
-        saveUserToLocalStorage(displayName); // Store the user in local storage
+        await signInWithRedirect(auth, provider);
       } catch (error) {
         console.log('Error signing in:', error.message);
       }
