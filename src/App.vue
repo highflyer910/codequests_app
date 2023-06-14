@@ -17,9 +17,9 @@
       </div>
       <h2 class="signed-in" v-if="user">You can do it {{ user }}:)</h2>
       <img :src="darkMode ? '/images/woman_dark.svg' : '/images/woman.svg'" :class="{ 'image-light': !darkMode, 'image-dark': darkMode }" alt="Woman image">
-      <h2 class="title">- CodeQuest - <br> Tame Your Side Projects</h2>
+      <h2 v-if="!user" class="title">- CodeQuest - <br> Tame Your Side Projects</h2>
       <h3 class="subtitle">Embrace the Challenge, One Project at a Time!</h3>
-      <input type="text" v-model="inputValue" placeholder="To Finish Project" @keypress.enter="addItemToList" :disabled="!user" v-show="user">
+      <input type="text" v-model="inputValue" placeholder="to finish..." @keypress.enter="addItemToList" :disabled="!user" v-show="user">
       <button class="add-item" @click="addItemToList" :disabled="!user" v-show="user">Add to list</button>
       <div v-if="!user" class="main-text">
       <p>
@@ -44,7 +44,7 @@
 
 <script>
 import { ref, onMounted, watch } from 'vue';
-import { getAuth, signInWithRedirect, onAuthStateChanged, setPersistence, browserSessionPersistence, GithubAuthProvider } from 'firebase/auth';
+import { getAuth, signInWithPopup, onAuthStateChanged, setPersistence, browserSessionPersistence, GithubAuthProvider } from 'firebase/auth';
 import { getDatabase, ref as dbRef, push, onValue, remove } from 'firebase/database';
 import firebaseApp from '/db';
 
@@ -82,7 +82,8 @@ export default {
     };
 
     const addItemToList = () => {
-      const trimmedValue = inputValue.value.trim();
+      if (user) {
+        const trimmedValue = inputValue.value.trim();
 
       if (trimmedValue !== '') {
         const today = new Date();
@@ -90,42 +91,59 @@ export default {
         const itemValue = `${date} - ${trimmedValue}`;
 
         push(projectsInDB, itemValue);
-
+        
         inputValue.value = '';
       }
-    };
+    
+      } else {
+        console.log('Please sign in to add an item to the list.');
+      }
+};
+
 
     const removeItem = (itemId) => {
-      const exactLocationOfItemInDB = dbRef(database, `projects/${itemId}`);
-      remove(exactLocationOfItemInDB);
-    };
+      if (user) {
+        const exactLocationOfItemInDB = dbRef(database, `projects/${itemId}`);
+        remove(exactLocationOfItemInDB);
+      } else {
+        console.log('Please sign in to remove an item from the list.');
+      }
+};
 
     const signIn = async () => {
-      try {
-        await signInWithRedirect(auth, provider);
-      } catch (error) {
-        console.log('Error signing in:', error.message);
-      }
-    };
+        try {
+          const result = await signInWithPopup(auth, provider);
+          const displayName = result.user.displayName;
+          user.value = displayName;
+          saveUserToLocalStorage(displayName); // Store the user in local storage
+        } catch (error) {
+          console.log('Error signing in:', error.message);
+        }
+};
 
     const signOut = async () => {
       try {
-        await auth.signOut();
-        user.value = null;
-        removeUserFromLocalStorage(); // Remove the user from local storage
-        items.value = []; // Clear the to-do items
+        if (user) {
+          await auth.signOut();
+          user.value = null;
+          removeUserFromLocalStorage(); // Remove the user from local storage
+          items.value = []; // Clear the to-do items
+        } else {
+          console.log('You are not signed in.');
+        }
       } catch (error) {
         console.log('Error signing out:', error.message);
       }
-    };
+};
 
     onAuthStateChanged(auth, (loggedInUser) => {
       if (loggedInUser) {
         // User is signed in
         const displayName = loggedInUser.displayName;
         user.value = displayName;
+        saveUserToLocalStorage(displayName);
 
-        // Fetch initial to-do items once when the user is signed in
+    // Fetch initial to-do items once when the user is signed in
         onValue(projectsInDB, (snapshot) => {
           const data = snapshot.val();
 
@@ -138,9 +156,10 @@ export default {
       } else {
         // User is signed out
         user.value = null;
+        removeUserFromLocalStorage();
         items.value = []; // Clear the to-do items
       }
-    });
+});
 
     onMounted(() => {
       const theme = getThemeFromLocalStorage();
