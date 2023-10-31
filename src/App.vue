@@ -49,7 +49,7 @@ import {
   signInWithPopup,
   onAuthStateChanged,
   setPersistence,
-  browserSessionPersistence,
+  browserLocalPersistence,
   GithubAuthProvider
 } from 'firebase/auth';
 import { getDatabase, ref as dbRef, push, onValue, remove } from 'firebase/database';
@@ -67,7 +67,8 @@ export default {
     const projectsInDB = dbRef(database, 'projects');
 
     const auth = getAuth(app);
-    setPersistence(auth, browserSessionPersistence);
+    
+    setPersistence(auth, browserLocalPersistence);
     const provider = new GithubAuthProvider();
 
     const user = ref(null);
