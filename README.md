@@ -1,8 +1,8 @@
 # Codequests
 
 <p align="center">
-  <img src="https://res.cloudinary.com/highflyer910/image/upload/v1684951606/screencapture-localhost-5173-2023-05-24-22_03_36_thawoi.png" alt="Image 1" width="250" style="margin-right: 5px;">
-  <img src="https://res.cloudinary.com/highflyer910/image/upload/v1684951606/screencapture-localhost-5173-2023-05-24-22_02_38_bzjzxm.png" alt="Image 2" width="250">
+  <img src="https://res.cloudinary.com/dqycbt6xs/image/upload/v1720128958/screencapture-localhost-5173-2023-05-24-22_03_36_lugcar.png" alt="Image 1" width="250" style="margin-right: 5px;">
+  <img src="https://res.cloudinary.com/dqycbt6xs/image/upload/v1720128958/screencapture-localhost-5173-2023-05-24-22_02_38_nu9mff.png" alt="Image 2" width="250">
 </p>
 
 Have you ever found yourself with a long list of side projects, only to forget about them or struggle to keep track of them? If so, Qodequests is here to help! 🚀
